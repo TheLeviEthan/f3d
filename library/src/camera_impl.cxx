@@ -146,6 +146,28 @@ camera_state_t camera_impl::getState()
 }
 
 //----------------------------------------------------------------------------
+double camera_impl::getYaw()
+{
+  vtkCamera* cam = this->GetVTKCamera();             // copies current VTK camera
+  double* viewUp = cam->GetViewUp();                 // pointer to viewUp double
+  double* viewDir = cam->GetDirectionOfProjection(); // pointer to getDirectionOfProjection double
+  double yaw = atan2(viewDir[0], viewDir[2]); // takes the arctan of the first and third element of
+                                              // view direction vector to get yaw
+  return yaw;                                 // returns calculated yaw
+}
+
+//----------------------------------------------------------------------------
+double camera_impl::getElevation()
+{
+  vtkCamera* cam = this->GetVTKCamera();             // copies current VTK camera
+  double* viewUp = cam->GetViewUp();                 // pointer to viewUp double
+  double* viewDir = cam->GetDirectionOfProjection(); // pointer to getDirectionOfProjection double
+  double elevation = asin(
+    viewDir[1]); // takes the arcsin of the second element of view direction vector to get elevation
+  return elevation; // returns calulated elevation
+}
+
+//----------------------------------------------------------------------------
 void camera_impl::getState(camera_state_t& state)
 {
   vtkCamera* cam = this->GetVTKCamera();
